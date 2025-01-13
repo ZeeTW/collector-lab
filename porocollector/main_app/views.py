@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Poro
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from .forms import FeedingForm
 
 class PoroCreate(CreateView):
     model = Poro
@@ -9,7 +10,7 @@ class PoroCreate(CreateView):
 
 class PoroUpdate(UpdateView):
     model = Poro
-    fields = '__all__'
+    fields = ['name', 'description', 'image']
 
 class PoroDelete(DeleteView):
     model = Poro
@@ -30,5 +31,14 @@ def poro_index(request):
 def poros_detail(request, poro_id):
     poro = Poro.objects.get(id = poro_id)
     feeding_form = FeedingForm()
-    return render(request, 'poros/detail.html', {'poro' : poro})
+    return render(request, 'poros/detail.html', {'poro' : poro, 'feeding_form':feeding_form})
+
+def add_feeding(request, poro_id):
+    form = FeedingForm(request.POST)
+    if form.is_valid():
+        new_feeding = form.save(commit = False)
+        new_feeding.poro_id = poro_id
+        new_feeding.save()
+
+    return redirect('detail', poro_id = poro_id)
 
