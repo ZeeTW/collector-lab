@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{%block content%}
+
+<h1>Poro List</h1>
+
+{% for poro in poros%}
+  <div class="card">
+    <a href="{% url 'detail' poro.id %}">
+    <div class="card-content">
+      <div class="right">
+        {%load static%}
+        <img src="{%static poro.image|cut:'main_app/static/'%}" width="100px" height="100px">
+      </div>
+      <span class="card-title">{{poro.name}}</span>
+      <p>Description: {{poro.description}}</p>
+    </div>
+  </a>
+  </div>
+{%endfor%}
+
+{%endblock%}
