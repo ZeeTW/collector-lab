@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from datetime import date
 
 # Create your models here.
 
@@ -23,11 +24,22 @@ MEALS = (
     ('D', 'Dinner')
 )
 
+class Toy(models.Model):
+    name = models.CharField(max_length=50)
+    color = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        return reverse ('toys_detail', kwargs={'pk': self.id})
+
 class Poro(models.Model):
     name= models.CharField(max_length=100)
-    region= models.CharField(max_length=100, choices=REGIONS)
+    region= models.CharField(max_length=100, choices=REGIONS, default=REGIONS[0][0])
     description= models.TextField(max_length=250)
     image = models.ImageField(upload_to='main_app/static/uploads/', default='')
+    toys = models.ManyToManyField(Toy)
 
     def get_absolute_url(self):
         return reverse('detail', kwargs={'poro_id':self.id})
@@ -35,10 +47,12 @@ class Poro(models.Model):
     def __str__(self):
         return self.name
     
+    def fed_for_today(self):
+        return self.feeding_set.filter(date=date.today()).count() >=2    
+    
 class Feeding(models.Model):
     date = models.DateField()
     meal = models.CharField(max_length=1, choices= MEALS, default=MEALS[0][0])
-
     poro = models.ForeignKey(Poro, on_delete=models.CASCADE)
 
     def __str__(self):
