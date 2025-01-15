@@ -96,7 +96,6 @@
         </span>
       </div>
       <div class="card-action">
-        {{poro.id}} {{toy.id}}
         <form action="{% url 'assoc_toy' poro.id toy.id %}" method="post">
           {% csrf_token %}
           <button type="submit" class="btn">Add</button>

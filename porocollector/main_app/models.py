@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from datetime import date
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -40,6 +41,7 @@ class Poro(models.Model):
     description= models.TextField(max_length=250)
     image = models.ImageField(upload_to='main_app/static/uploads/', default='')
     toys = models.ManyToManyField(Toy)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
         return reverse('detail', kwargs={'poro_id':self.id})
@@ -48,7 +50,7 @@ class Poro(models.Model):
         return self.name
     
     def fed_for_today(self):
-        return self.feeding_set.filter(date=date.today()).count() >=2    
+        return self.feeding_set.filter(date=date.today()).count() >=3  
     
 class Feeding(models.Model):
     date = models.DateField()

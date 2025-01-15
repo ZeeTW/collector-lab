@@ -1,5 +1,3 @@
-
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -27,10 +25,26 @@
           </ul>
           <ul class="right">
             <li><a href="{% url 'about' %}">About</a></li>
+            {% if user.is_authenticated %}
             <li><a href="{% url 'poros_create' %}">Add a Poro</a></li>
             <li><a href="{% url 'index' %}">View all my Poros</a></li>
             <li><a href="{% url 'toys_create' %}">Add a Toy</a></li>
             <li><a href="{% url 'toys_index' %}">View All Toys</a></li>
+            <li>
+              <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Log out!</button>
+              </form>
+            </li>
+            Hi {{user.username}} 
+            {% else %}
+            <li>
+              <a href="{% url 'signup' %}">Sign Up</a>
+            </li>
+            <li>
+              <a href="{% url 'login' %}">Login</a>
+            </li>
+            {% endif %}
           </ul>
         </div>
       </nav>
@@ -43,9 +57,3 @@
     </footer>
   </body>
 </html>
-
-
-
-
-
-

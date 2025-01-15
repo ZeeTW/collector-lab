@@ -21,5 +21,8 @@ urlpatterns=[
     path('poros/<int:poro_id>/assoc_toy/<int:toy_id>/', views.assoc_toy, name='assoc_toy'),
 
     # Unassociate / Disassociate a toy with a poro (M:M)
-    path('poros/<int:poro_id>/unassoc_toy/<int:toy_id>/', views.unassoc_toy, name='unassoc_toy')
+    path('poros/<int:poro_id>/unassoc_toy/<int:toy_id>/', views.unassoc_toy, name='unassoc_toy'),
+
+    #sign-up
+    path('accounts/signup/', views.signup, name='signup')
 ]
